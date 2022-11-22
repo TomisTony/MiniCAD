@@ -1,3 +1,5 @@
+package MiniCAD;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -6,7 +8,7 @@ public class MiniCAD {
     JPanel drawBoard = new JPanel();
     JPanel toolBar = new JPanel();
     JPanel bottomBar = new JPanel();
-    MiniCAD(){
+    public MiniCAD(){
         setMainJFrame();
         setToolBar();
         setDrawBoard();
@@ -14,7 +16,7 @@ public class MiniCAD {
         mainJFrame.setVisible(true);
     }
     private void setMainJFrame(){
-        mainJFrame.setSize(defaultSettings.WINDOW_WIDTH,defaultSettings.WINDOW_HEIGHT);
+        mainJFrame.setSize(DefaultSettings.WINDOW_WIDTH, DefaultSettings.WINDOW_HEIGHT);
         mainJFrame.setResizable(false);//不允许改变大小，以免出现排版问题
         mainJFrame.setLocationRelativeTo(null);
         mainJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -23,7 +25,7 @@ public class MiniCAD {
         mainJFrame.add(bottomBar, BorderLayout.SOUTH);
     }
     private void setToolBar(){
-        toolBar.setPreferredSize(new Dimension(defaultSettings.TOOLBAR_WIDTH, defaultSettings.TOOLBAR_HEIGHT));
+        toolBar.setPreferredSize(new Dimension(DefaultSettings.TOOLBAR_WIDTH, DefaultSettings.TOOLBAR_HEIGHT));
         toolBar.setBackground(Color.LIGHT_GRAY);
         setToolButtons();
         setColorButtons();
@@ -33,10 +35,11 @@ public class MiniCAD {
         for (int i = 0; i < shapeName.length; i++) {
             JButton toolButton = new JButton(shapeName[i]);
             toolButton.setIcon(getFixedImageIcon("src/icons/" + shapeName[i] + ".png",shapeName[i],
-                    defaultSettings.TOOL_ICON_SIDE_LENGTH,defaultSettings.TOOL_ICON_SIDE_LENGTH));
-            toolButton.setPreferredSize(new Dimension(defaultSettings.TOOL_ICON_SIDE_LENGTH+10,
-                    defaultSettings.TOOL_ICON_SIDE_LENGTH+10));
+                    DefaultSettings.TOOL_ICON_SIDE_LENGTH, DefaultSettings.TOOL_ICON_SIDE_LENGTH));
+            toolButton.setPreferredSize(new Dimension(DefaultSettings.TOOL_ICON_SIDE_LENGTH+10,
+                    DefaultSettings.TOOL_ICON_SIDE_LENGTH+10));
             toolButton.setBackground(Color.white);
+            toolButton.setToolTipText(shapeName[i]);
 
 //            toolButton.addActionListener(myMouse);
             toolBar.add(toolButton);
@@ -48,17 +51,17 @@ public class MiniCAD {
         for (int i = 0; i < colors.length; i++) {
             JButton colorButton = new JButton();
             colorButton.setBackground(colors[i]);
-            colorButton.setPreferredSize(new Dimension(defaultSettings.COLOR_SIDE_LENGTH ,
-                    defaultSettings.COLOR_SIDE_LENGTH));
+            colorButton.setPreferredSize(new Dimension(DefaultSettings.COLOR_SIDE_LENGTH ,
+                    DefaultSettings.COLOR_SIDE_LENGTH));
 //            nowButton.addActionListener(myMouse);
             toolBar.add(colorButton);
         }
     }
     private void setDrawBoard(){}
     private void setBottomBar(){
-        bottomBar.setPreferredSize(new Dimension(defaultSettings.BOTTOMBAR_WIDTH,defaultSettings.BOTTOMBAR_HEIGHT));
+        bottomBar.setPreferredSize(new Dimension(DefaultSettings.BOTTOMBAR_WIDTH, DefaultSettings.BOTTOMBAR_HEIGHT));
         bottomBar.setBackground(Color.white);
-        JLabel notifyLable = new JLabel(defaultSettings.NOTIFY_IDLE);
+        JLabel notifyLable = new JLabel(DefaultSettings.NOTIFY_IDLE);
         notifyLable.setForeground(Color.black);
         notifyLable.setVisible(true);
         notifyLable.setBackground(Color.BLUE);
@@ -82,10 +85,6 @@ public class MiniCAD {
         icon.setImage(img);
         return icon;
     }
-    public static void main(String[] args) {
-        new MiniCAD();
-    }
-
 
 
     public static void showNewWindow(JFrame relativeWindow) {
