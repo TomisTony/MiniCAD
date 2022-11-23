@@ -20,8 +20,5 @@ public class DefaultSettings {
     public static final int FONT_SIZE_BASE = 10;//font-size的基数
     //endregion
 
-    //region state machine help word
-    public static final String NOTIFY_IDLE = "(idle)";
-    //endregion
 
 }

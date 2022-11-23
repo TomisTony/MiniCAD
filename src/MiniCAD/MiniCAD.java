@@ -1,18 +1,29 @@
 package MiniCAD;
+import MiniCAD.StateMachine.CADState;
+import MiniCAD.StateMachine.IdleState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class MiniCAD {
+    public CADState nowState;
+    private ActionListener actionListener;
+    JLabel notifyLable;
     final JFrame mainJFrame = new JFrame("MiniCAD");
     JPanel drawBoard = new JPanel();
     JPanel toolBar = new JPanel();
     JPanel bottomBar = new JPanel();
+
     public MiniCAD(){
+        //顺序不能随意调换，需要先初始化state和actionListener,最后才能加鼠标监听
+        nowState = new IdleState(this);
+        actionListenerInit();
         setMainJFrame();
         setToolBar();
         setDrawBoard();
         setBottomBar();
+        setMouseListener();
         mainJFrame.setVisible(true);
     }
     private void setMainJFrame(){
@@ -61,12 +72,7 @@ public class MiniCAD {
     private void setBottomBar(){
         bottomBar.setPreferredSize(new Dimension(DefaultSettings.BOTTOMBAR_WIDTH, DefaultSettings.BOTTOMBAR_HEIGHT));
         bottomBar.setBackground(Color.white);
-        JLabel notifyLable = new JLabel(DefaultSettings.NOTIFY_IDLE);
-        notifyLable.setForeground(Color.black);
-        notifyLable.setVisible(true);
-        notifyLable.setBackground(Color.BLUE);
-        notifyLable.setHorizontalAlignment(SwingConstants.LEFT);
-        notifyLable.setVerticalAlignment(SwingConstants.TOP);
+        setNotifyLable();
         bottomBar.add(notifyLable);
     }
 
@@ -86,33 +92,64 @@ public class MiniCAD {
         return icon;
     }
 
+    private void setMouseListener(){
+        drawBoard.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowState.mouseClicked(e);
+            }
 
-    public static void showNewWindow(JFrame relativeWindow) {
-        // 创建一个新窗口
-        JFrame newJFrame = new JFrame("新的窗口");
+            @Override
+            public void mousePressed(MouseEvent e) {
+                nowState.mousePressed(e);
+            }
 
-        newJFrame.setSize(250, 250);
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                nowState.mouseReleased(e);
+            }
 
-        // 把新窗口的位置设置到 relativeWindow 窗口的中心
-        newJFrame.setLocationRelativeTo(relativeWindow);
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                nowState.mouseEntered(e);
+            }
 
-        // 点击窗口关闭按钮, 执行销毁窗口操作（如果设置为 EXIT_ON_CLOSE, 则点击新窗口关闭按钮后, 整个进程将结束）
-        newJFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            @Override
+            public void mouseExited(MouseEvent e) {
+                nowState.mouseExited(e);
+            }
+        });
+        drawBoard.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                nowState.mouseDragged(e);
+            }
 
-        // 窗口设置为不可改变大小
-        newJFrame.setResizable(false);
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                nowState.mouseMoved(e);
+            }
+        });
+        drawBoard.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                nowState.mouseWheelMoved(e);
+            }
+        });
+    }
+    private void actionListenerInit(){
+        actionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nowState.clickButton(e);
+            }
+        };
+    }
 
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-
-        // 在新窗口中显示一个标签
-        JLabel label = new JLabel("这是一个窗口");
-        label.setFont(new Font(null, Font.PLAIN, 25));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        panel.add(label);
-
-        newJFrame.setContentPane(panel);
-        newJFrame.setVisible(true);
+    public void setNotifyLable() {
+        this.notifyLable = new JLabel(this.nowState.getNotify());
+        notifyLable.setForeground(Color.black);
+        notifyLable.setVisible(true);
     }
 
 }
