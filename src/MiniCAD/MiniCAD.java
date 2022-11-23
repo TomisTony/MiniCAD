@@ -76,6 +76,7 @@ public class MiniCAD {
         drawBoard.setBackground(DefaultSettings.DRAW_BOARD_BGCOLOR);
     }
     public JPanel getDrawBoard(){return drawBoard;}
+    public JFrame getMainJFrame(){return mainJFrame;}
     private void setBottomBar(){
         bottomBar.setPreferredSize(new Dimension(DefaultSettings.BOTTOMBAR_WIDTH, DefaultSettings.BOTTOMBAR_HEIGHT));
         bottomBar.setBackground(DefaultSettings.BOTTOMBAR_BGCOLOR);
@@ -163,7 +164,8 @@ public class MiniCAD {
 
     public void paintAllShapes(Graphics2D graphics){
         graphics2D = (Graphics2D) drawBoard.getGraphics();
-        drawBoard.setBackground(DefaultSettings.DRAW_BOARD_BGCOLOR);
+        graphics2D.setColor(DefaultSettings.DRAW_BOARD_BGCOLOR);
+        drawBoard.getGraphics().clearRect(0,0,DefaultSettings.WINDOW_WIDTH,DefaultSettings.WINDOW_HEIGHT);
         for(Shape shape: shapes){
             shape.draw(graphics2D);
         }

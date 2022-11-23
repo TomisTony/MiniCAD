@@ -1,43 +1,45 @@
 package MiniCAD.StateMachine;
 
 import MiniCAD.MiniCAD;
+import MiniCAD.shapes.Shape;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Stack;
 
-public class IdleState extends CADState {
-    public IdleState(MiniCAD miniCAD) {
+public class loadState extends CADState{
+    String filePath;
+    loadState(MiniCAD miniCAD, String filePath) {
         super(miniCAD);
-        setStateName("IdleState");
+        this.filePath = filePath;
+        setStateName("loadState");
         getMiniCAD().nowState = this;
         handle();
     }
 
     @Override
     public void handle() {
-        setNotify("(idle)");
+        setNotify("");
+        ObjectInputStream ios;
+        try {
+            ios = new ObjectInputStream(new FileInputStream(filePath));
+            Object obj = ios.readObject();
+            getMiniCAD().shapes = (ArrayList<Shape>) obj;
+            getMiniCAD().paintAllShapes(getMiniCAD().graphics2D);
+        }
+        catch (Exception ie){
+            System.out.println(ie.getMessage());
+        }
+        setNextState(new IdleState(getMiniCAD()));
     }
 
     @Override
     public void clickButton(ActionEvent event) {
-        logButtonName(event);
-        String buttonName = event.getActionCommand();
-        switch (buttonName){
-            case "rectangular":
-            case "circle":
-            case "line":
-            case "text":
-                setNextState(new drawShapeState(getMiniCAD(),buttonName));
-                break;
-            case "open":
-            case "save":
-                setNextState(new chooseFilePathState(getMiniCAD(),buttonName));
-                break;
-            default:
-                logSwitchDefault(buttonName);
-                break;
-        }
+
     }
 
     @Override

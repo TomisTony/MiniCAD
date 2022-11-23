@@ -30,9 +30,13 @@ public class drawSecondPointState extends CADState{
         setNotify("");
         switch (shapeName){
             case "rectangular":
-                int width = Math.abs(x2-x1);
-                int height = Math.abs(y2-y1);
-                getMiniCAD().shapes.add(new Rectangular(x1,y1,width,height, DefaultSettings.DEFAULT_SHAPE_COLOR));
+                int x_1 = Math.min(x1,x2);
+                int x_2 = Math.max(x1,x2);
+                int y_1 = Math.min(y1,y2);
+                int y_2 = Math.max(y1,y2);
+                int width = x_2-x_1;
+                int height = y_2-y_1;
+                getMiniCAD().shapes.add(new Rectangular(x_1,y_1,width,height, DefaultSettings.DEFAULT_SHAPE_COLOR));
                 break;
             case "circle":
                 int radius = (int)Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
