@@ -21,7 +21,7 @@ public class drawShapeState extends CADState{
     public void handle() {
         switch (shapeName){
             case "rectangular":
-                setNotify("选择一个点作为矩形左上角");
+                setNotify("选择一个点作为矩形的第一个点");
                 break;
             case "circle":
                 setNotify("选择一个点作为圆心");

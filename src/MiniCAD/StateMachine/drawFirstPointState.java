@@ -25,10 +25,10 @@ public class drawFirstPointState extends CADState{
     public void handle() {
         switch (shapeName){
             case "rectangular":
-                setNotify("选择第二个点作为矩形左上角");
+                setNotify("选择第二个点作为矩形的另一个点");
                 break;
             case "circle":
-                setNotify("选择第二个点作为圆心");
+                setNotify("选择第二个点来决定圆形的半径");
                 break;
             case "line":
                 setNotify("选择第二个点作为直线的第一个点");
