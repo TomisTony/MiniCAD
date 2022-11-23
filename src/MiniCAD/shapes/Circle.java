@@ -30,6 +30,6 @@ public class Circle extends Shape implements Serializable {
     @Override
     public void draw(Graphics graphics) {
         graphics.setColor(color);
-        graphics.drawArc(x,y,radius,radius,0,360);
+        graphics.drawArc(x-radius,y-radius,2*radius,2*radius,0,360);
     }
 }

@@ -1,22 +1,31 @@
 package MiniCAD.StateMachine;
-
+import MiniCAD.DefaultSettings;
 import MiniCAD.MiniCAD;
+import MiniCAD.shapes.Text;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class IdleState extends CADState {
-    public IdleState(MiniCAD miniCAD) {
+public class drawTextState extends CADState{
+    JTextField content;
+    JFrame textFrame;
+    int x,y;
+    drawTextState(MiniCAD miniCAD, JTextField content, JFrame textFrame, int x, int y) {
         super(miniCAD);
-        setStateName("IdleState");
+        this.content = content;
+        this.textFrame = textFrame;
+        this.x = x;
+        this.y = y;
+        setStateName("drawTextState");
         getMiniCAD().nowState = this;
         handle();
     }
 
     @Override
     public void handle() {
-        setNotify("(idle)");
+        setNotify("选择输入所要展示的Text");
     }
 
     @Override
@@ -24,11 +33,15 @@ public class IdleState extends CADState {
         logButtonName(event);
         String buttonName = event.getActionCommand();
         switch (buttonName){
-            case "rectangular":
-            case "circle":
-            case "line":
-            case "text":
-                setNextState(new drawShapeState(getMiniCAD(),buttonName));
+            case "OK":
+                String text = content.getText();
+                textFrame.setVisible(false);
+                if (!text.isEmpty()) {
+                    getMiniCAD().shapes.add(new Text(x, y, DefaultSettings.TEXT_DEFAULT_SIZE,
+                            DefaultSettings.DEFAULT_SHAPE_COLOR,text));
+                    getMiniCAD().paintAllShapes(getMiniCAD().graphics2D);
+                    setNextState(new drawShapeState(getMiniCAD(),"text"));
+                }
                 break;
             default:
                 logSwitchDefault(buttonName);

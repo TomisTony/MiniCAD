@@ -1,19 +1,23 @@
 package MiniCAD;
 import MiniCAD.StateMachine.CADState;
 import MiniCAD.StateMachine.IdleState;
+import MiniCAD.shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class MiniCAD {
     public CADState nowState;
+    public ArrayList<Shape> shapes = new ArrayList<>();
     private ActionListener actionListener;
-    JLabel notifyLable;
+    JLabel notifyLable;//底部notify栏，用于展示提示信息
     final JFrame mainJFrame = new JFrame("MiniCAD");
     JPanel drawBoard = new JPanel();
     JPanel toolBar = new JPanel();
     JPanel bottomBar = new JPanel();
+    public Graphics2D graphics2D;
 
     public MiniCAD(){
         //顺序不能随意调换，需要先初始化state和actionListener,最后才能加鼠标监听
@@ -37,7 +41,7 @@ public class MiniCAD {
     }
     private void setToolBar(){
         toolBar.setPreferredSize(new Dimension(DefaultSettings.TOOLBAR_WIDTH, DefaultSettings.TOOLBAR_HEIGHT));
-        toolBar.setBackground(Color.LIGHT_GRAY);
+        toolBar.setBackground(DefaultSettings.TOOLBAR_BGCOLOR);
         setToolButtons();
         setColorButtons();
     }
@@ -49,10 +53,10 @@ public class MiniCAD {
                     DefaultSettings.TOOL_ICON_SIDE_LENGTH, DefaultSettings.TOOL_ICON_SIDE_LENGTH));
             toolButton.setPreferredSize(new Dimension(DefaultSettings.TOOL_ICON_SIDE_LENGTH+10,
                     DefaultSettings.TOOL_ICON_SIDE_LENGTH+10));
-            toolButton.setBackground(Color.white);
+            toolButton.setBackground(DefaultSettings.TOOLBUTTON_BGCOLOR);
             toolButton.setToolTipText(shapeName[i]);
 
-//            toolButton.addActionListener(myMouse);
+            toolButton.addActionListener(actionListener);
             toolBar.add(toolButton);
         }
     }
@@ -64,15 +68,17 @@ public class MiniCAD {
             colorButton.setBackground(colors[i]);
             colorButton.setPreferredSize(new Dimension(DefaultSettings.COLOR_SIDE_LENGTH ,
                     DefaultSettings.COLOR_SIDE_LENGTH));
-//            nowButton.addActionListener(myMouse);
+            colorButton.addActionListener(actionListener);
             toolBar.add(colorButton);
         }
     }
-    private void setDrawBoard(){}
+    private void setDrawBoard(){
+        drawBoard.setBackground(DefaultSettings.DRAW_BOARD_BGCOLOR);
+    }
+    public JPanel getDrawBoard(){return drawBoard;}
     private void setBottomBar(){
         bottomBar.setPreferredSize(new Dimension(DefaultSettings.BOTTOMBAR_WIDTH, DefaultSettings.BOTTOMBAR_HEIGHT));
-        bottomBar.setBackground(Color.white);
-        setNotifyLable();
+        bottomBar.setBackground(DefaultSettings.BOTTOMBAR_BGCOLOR);
         bottomBar.add(notifyLable);
     }
 
@@ -146,10 +152,21 @@ public class MiniCAD {
         };
     }
 
-    public void setNotifyLable() {
-        this.notifyLable = new JLabel(this.nowState.getNotify());
-        notifyLable.setForeground(Color.black);
+    public void setNotifyLable(String notify) {
+        bottomBar.removeAll();
+        notifyLable = new JLabel(notify);
+        notifyLable.setForeground(DefaultSettings.NOTIFY_COLOR);
         notifyLable.setVisible(true);
+        bottomBar.add(notifyLable);
+        bottomBar.updateUI();
+    }
+
+    public void paintAllShapes(Graphics2D graphics){
+        graphics2D = (Graphics2D) drawBoard.getGraphics();
+        drawBoard.setBackground(DefaultSettings.DRAW_BOARD_BGCOLOR);
+        for(Shape shape: shapes){
+            shape.draw(graphics2D);
+        }
     }
 
 }

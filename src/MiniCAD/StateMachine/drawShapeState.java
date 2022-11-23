@@ -6,34 +6,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class IdleState extends CADState {
-    public IdleState(MiniCAD miniCAD) {
+public class drawShapeState extends CADState{
+    private String shapeName;
+
+    drawShapeState(MiniCAD miniCAD, String shapeName) {
         super(miniCAD);
-        setStateName("IdleState");
+        setStateName("drawShapeState");
+        this.shapeName = shapeName;
         getMiniCAD().nowState = this;
         handle();
     }
 
     @Override
     public void handle() {
-        setNotify("(idle)");
+        switch (shapeName){
+            case "rectangular":
+                setNotify("选择一个点作为矩形左上角");
+                break;
+            case "circle":
+                setNotify("选择一个点作为圆心");
+                break;
+            case "line":
+                setNotify("选择一个点作为直线的第一个点");
+                break;
+            case "text":
+                setNotify("选择一个点作为文字的起始位置");
+                break;
+            default:
+                logSwitchDefault(shapeName);
+                break;
+        }
     }
 
     @Override
     public void clickButton(ActionEvent event) {
-        logButtonName(event);
-        String buttonName = event.getActionCommand();
-        switch (buttonName){
-            case "rectangular":
-            case "circle":
-            case "line":
-            case "text":
-                setNextState(new drawShapeState(getMiniCAD(),buttonName));
-                break;
-            default:
-                logSwitchDefault(buttonName);
-                break;
-        }
+        //切换至idleState并执行按钮点击
+        setNextState(new IdleState(getMiniCAD()));
+        getMiniCAD().nowState.clickButton(event);
     }
 
     @Override
@@ -63,7 +72,7 @@ public class IdleState extends CADState {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-
+        setNextState(new drawFirstPointState(getMiniCAD(),shapeName,event.getX(),event.getY()));
     }
 
     @Override

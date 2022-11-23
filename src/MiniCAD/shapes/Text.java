@@ -6,9 +6,10 @@ import java.io.Serializable;
 public class Text extends Shape implements Serializable {
     private int size;
     private String content;
-    public Text(int x, int y, int size, Color color){
+    public Text(int x, int y, int size, Color color,String content){
         super(x,y,color);
         this.size = size;
+        this.content = content;
     }
 
     @Override
