@@ -16,6 +16,9 @@ public abstract class Shape implements Serializable {
     public void setColor(Color color){
         this.color = color;
     }
+    public void moveTo(int toX,int toY){
+        x = toX; y = toY;
+    }
     public abstract void addSize(float dsize);
     public abstract void subSize(float dsize);
     public abstract void draw(Graphics graphics);

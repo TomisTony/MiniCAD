@@ -70,6 +70,8 @@ public class chooseFilePathState extends CADState{
     private static String showFileSaveDialog(Component parent) {
         // 创建一个默认的文件选取器
         JFileChooser fileChooser = new JFileChooser();
+        // 设置默认显示的文件夹为当前文件夹
+        fileChooser.setCurrentDirectory(new File("."));
         // 设置打开文件选择框后默认输入的文件名
         fileChooser.setSelectedFile(new File("data.cad"));
         // 设置默认使用的文件过滤器

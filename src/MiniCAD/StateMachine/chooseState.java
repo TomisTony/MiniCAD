@@ -1,41 +1,23 @@
 package MiniCAD.StateMachine;
 
 import MiniCAD.MiniCAD;
+import MiniCAD.shapes.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class drawShapeState extends CADState{
-    private String shapeName;
-
-    drawShapeState(MiniCAD miniCAD, String shapeName) {
+public class chooseState extends CADState{
+    chooseState(MiniCAD miniCAD) {
         super(miniCAD);
-        setStateName("drawShapeState");
-        this.shapeName = shapeName;
+        setStateName("chooseState");
         getMiniCAD().nowState = this;
         handle();
     }
 
     @Override
     public void handle() {
-        switch (shapeName){
-            case "rectangular":
-                setNotify("选择一个点作为矩形左上角");
-                break;
-            case "circle":
-                setNotify("选择一个点作为圆心");
-                break;
-            case "line":
-                setNotify("选择一个点作为直线的第一个点");
-                break;
-            case "text":
-                setNotify("选择一个点作为文字的起始位置");
-                break;
-            default:
-                logSwitchDefault(shapeName);
-                break;
-        }
+        setNotify("点击一个图形来选中");
     }
 
     @Override
@@ -77,7 +59,14 @@ public class drawShapeState extends CADState{
 
     @Override
     public void mousePressed(MouseEvent event) {
-        setNextState(new drawFirstPointState(getMiniCAD(),shapeName,event.getX(),event.getY()));
+        int curX = event.getX();
+        int curY = event.getY();
+        for(Shape shape:getMiniCAD().shapes){
+            if(shape.isIn(curX,curY)){
+                setNextState(new shapeChoosedState(getMiniCAD(),shape));
+                break;
+            }
+        }
     }
 
     @Override

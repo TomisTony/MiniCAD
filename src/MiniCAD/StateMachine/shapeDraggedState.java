@@ -1,55 +1,43 @@
 package MiniCAD.StateMachine;
 
 import MiniCAD.MiniCAD;
+import MiniCAD.shapes.Shape;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class IdleState extends CADState {
-    public IdleState(MiniCAD miniCAD) {
+public class shapeDraggedState extends CADState{
+    Shape choosedShape;
+    shapeDraggedState(MiniCAD miniCAD, Shape choosedShape) {
         super(miniCAD);
-        setStateName("IdleState");
+        this.choosedShape = choosedShape;
+        setStateName("shapeDraggedState");
         getMiniCAD().nowState = this;
         handle();
     }
 
     @Override
     public void handle() {
-        setNotify("(idle)");
+        setNotify("正在拖动图形");
     }
 
     @Override
     public void clickButton(ActionEvent event) {
-        logButtonName(event);
-        String buttonName = event.getActionCommand();
-        switch (buttonName){
-            case "rectangular":
-            case "circle":
-            case "line":
-            case "text":
-                setNextState(new drawShapeState(getMiniCAD(),buttonName));
-                break;
-            case "open":
-            case "save":
-                setNextState(new chooseFilePathState(getMiniCAD(),buttonName));
-                break;
-            case "choose":
-                setNextState(new chooseState(getMiniCAD()));
-            default:
-                logSwitchDefault(buttonName);
-                break;
-        }
+
     }
 
     @Override
     public void mouseDragged(MouseEvent event) {
-
+        int curX = event.getX();
+        int curY = event.getY();
+        choosedShape.moveTo(curX,curY);
+        getMiniCAD().paintAllShapes(getMiniCAD().graphics2D);
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-
+        setNextState(new shapeChoosedState(getMiniCAD(),choosedShape));
     }
 
     @Override

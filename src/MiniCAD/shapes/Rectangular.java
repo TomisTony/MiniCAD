@@ -14,14 +14,14 @@ public class Rectangular extends Shape implements Serializable {
     @Override
     public void addSize(float dsize) {
         width += dsize;
-        height += dsize * height / width;
+        height += (int)(dsize * (double)height / (double) width);
     }
 
     @Override
     public void subSize(float dsize) {
         if(width - dsize < DefaultSettings.SHAPE_MIN_SIZE) return;
         width -= dsize;
-        height -= dsize * height / width;
+        height -= (int)(dsize * (double)height / (double) width);
     }
 
     @Override
