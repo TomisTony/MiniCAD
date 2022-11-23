@@ -1,6 +1,6 @@
 .idea
 out
-BrCAD.iml
+MiniCAD.iml
 # Compiled class file
 *.class
 
@@ -14,7 +14,6 @@ BrCAD.iml
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear

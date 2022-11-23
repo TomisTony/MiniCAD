@@ -1,2 +1,15 @@
 # MiniCAD 实验报告
-MiniCAD for zju JAVA course
+>  MiniCAD for zju JAVA course
+
+## 题目要求
+
+用Java的awt和swing做一个简单的绘图工具，以CAD的方式操作，能放置直线、矩形、圆和文字，能选中图形，修改参数，如颜色等，能拖动图形和调整大小，可以保存和恢复。功能请参考视频演示。
+
+要求上传：
+
+1. 源码；
+2. 实验报告；
+3. 可执行的jar文件。
+
+实验报告中须注明使用的Java版本、在Linux平台上编译源码及运行的命令。
+
