@@ -25,6 +25,30 @@
 java -jar MiniCAD.jar
 ```
 
+## 编译方式
+
+### PREPARE
+
+Make sure you are in `./compile` folder.
+
+```shell
+pwd
+```
+
+### COMPILE
+
+```shell
+ javac @sourceList.txt -encoding utf-8
+```
+
+### RUN
+
+```shell
+java start
+```
+
+
+
 ## 程序功能介绍
 
 ***请随时留意程序状态提示框的指引。***
@@ -32,7 +56,7 @@ java -jar MiniCAD.jar
 - 选择图形
   - 点击图形即可选中图形
   - 在图形被选中的情况下
-    - **点击颜色按钮可以调整图形颜色****
+    - **点击颜色按钮可以调整图形颜色**
     - **可以拖动图形调整位置**
     - **可以使用鼠标滚轮调整图形大小**
     - 可以点击删除按钮删除图形
